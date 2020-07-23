@@ -2,6 +2,7 @@ package calculator_test
 
 import (
 	"calculator"
+	"fmt"
 	"testing"
 )
 
@@ -22,6 +23,27 @@ func TestSubtract(t *testing.T) {
 	}
 }
 
+func TestDivide(t *testing.T) {
+	testCases := []struct {
+		a, b          int
+		want          int
+		errorExpected bool
+	}{
+		{a: 1, b: 1, want: 1, errorExpected: false},
+		{a: 4, b: 0, want: 2, errorExpected: true},
+		{a: 42, b: 7, want: 6, errorExpected: false},
+	}
+	for _, testCase := range testCases {
+		got, err := calculator.Divide(testCase.a, testCase.b)
+		if err == nil {
+			if testCase.want != got {
+				t.Errorf("Add(%d, %d): want %d, got %d, err %v", testCase.a, testCase.b, testCase.want, got, err)
+			}
+		} else {
+			fmt.Printf("expected error; got %v\n", err)
+		}
+	}
+}
 func TestMultiply(t *testing.T) {
 	testCases := []struct {
 		a, b int
@@ -39,17 +61,17 @@ func TestMultiply(t *testing.T) {
 	}
 }
 
-func TestDivide(t *testing.T) {
+func TestAdd(t *testing.T) {
 	testCases := []struct {
 		a, b int
 		want int
 	}{
-		{a: 1, b: 1, want: 1},
-		{a: 4, b: 2, want: 2},
-		{a: 42, b: 7, want: 6},
+		{a: 1, b: 1, want: 2},
+		{a: 2, b: 2, want: 4},
+		{a: 6, b: 7, want: 13},
 	}
 	for _, testCase := range testCases {
-		got := calculator.Divide(testCase.a, testCase.b)
+		got := calculator.Add(testCase.a, testCase.b)
 		if testCase.want != got {
 			t.Errorf("Add(%d, %d): want %d, got %d", testCase.a, testCase.b, testCase.want, got)
 		}
